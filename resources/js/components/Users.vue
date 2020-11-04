@@ -37,16 +37,17 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Juan</td>
-                  <td>Dela Cruz</td>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.firstname }}</td>
+                  <td>{{ user.lastname }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.type.type }}</td>
                   <td>
-                    <a href="mailto:admin@argon.com">admin@argon.com</a>
+                    {{ user.branch.street }}, {{ user.branch.baranggay }},
+                    {{ user.branch.city_munacipality }}
                   </td>
-                  <td>Staff</td>
-                  <td>Cebu</td>
-                  <td>12/02/2020 11:00</td>
-                  <td>12/02/2020 11:00</td>
+                  <td>{{ user.created_at }}</td>
+                  <td>{{ user.updated_at }}</td>
                   <td class="text-right">
                     <div class="dropdown">
                       <a
@@ -210,3 +211,28 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      editMode: false,
+      users: {},
+    };
+  },
+  methods: {
+    loadUsers() {
+      axios.get("/api/users").then((data) => (this.users = data.data));
+    },
+
+    loadType() {},
+
+    loadBranch() {},
+  },
+  created() {
+    this.loadUsers();
+    this.loadType();
+    this.loadBranch();
+  },
+};
+</script>
