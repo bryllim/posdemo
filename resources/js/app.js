@@ -21,6 +21,12 @@ import SalesMonitor from './components/SalesMonitor.vue';
 import POS from './components/POS.vue';
 import User from './components/Users.vue';
 
+// Import v-form
+import { Form, HasError, AlertError } from 'vform';
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
 Vue.use(VueRouter);
 
 const routes = [

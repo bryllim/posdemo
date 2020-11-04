@@ -104,7 +104,7 @@
             <div class="text-center text-muted mb-4">
               <small>Enter the personal information</small>
             </div>
-            <form role="form">
+            <form role="form" @submit.prevent="createUser">
               <!-- First Name Input -->
               <div class="form-group mb-3">
                 <div class="input-group input-group-alternative">
@@ -112,6 +112,8 @@
                     class="form-control"
                     placeholder="First Name"
                     type="text"
+                    v-model="form.firstname"
+                    name="firstname"
                   />
                 </div>
               </div>
@@ -122,6 +124,8 @@
                     class="form-control"
                     placeholder="Last Name"
                     type="text"
+                    v-model="form.lastname"
+                    name="lastname"
                   />
                 </div>
               </div>
@@ -132,6 +136,8 @@
                     class="form-control"
                     placeholder="Email"
                     type="email"
+                    v-model="form.email"
+                    name="email"
                   />
                 </div>
               </div>
@@ -142,6 +148,8 @@
                     class="form-control"
                     placeholder="Password"
                     type="password"
+                    v-model="form.password"
+                    name="password"
                   />
                 </div>
               </div>
@@ -152,6 +160,8 @@
                     class="form-control"
                     placeholder="Location"
                     type="text"
+                    v-model="form.location"
+                    name="location"
                   />
                 </div>
               </div>
@@ -162,6 +172,8 @@
                     class="form-control"
                     placeholder="Phone Number"
                     type="tel"
+                    v-model="form.phone"
+                    name="phone"
                   />
                 </div>
               </div>
@@ -171,11 +183,15 @@
                   <select
                     class="form-control"
                     data-toggle="select"
-                    data-placeholder="Select a role"
+                    v-model="form.type"
                   >
-                    <option>Staff</option>
-                    <option>Manager</option>
-                    <option>Admin</option>
+                    <option
+                      v-for="type in types"
+                      :value="type.id"
+                      :key="type.id"
+                    >
+                      {{ type.type }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -186,11 +202,15 @@
                   <select
                     class="form-control"
                     data-toggle="select"
-                    data-placeholder="Select designated branch"
+                    v-model="form.branch"
                   >
-                    <option>Cebu</option>
-                    <option>Manila</option>
-                    <option>Zamboanga</option>
+                    <option
+                      v-for="branch in branches"
+                      :value="branch.id"
+                      :key="branch.id"
+                    >
+                      {{ branch.city_munacipality }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -204,7 +224,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -216,8 +236,19 @@
 export default {
   data() {
     return {
-      editMode: false,
       users: {},
+      types: {},
+      branches: {},
+      form: new Form({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        location: "",
+        phone: "",
+        type: "",
+        branch: "",
+      }),
     };
   },
   methods: {
@@ -225,9 +256,17 @@ export default {
       axios.get("/api/users").then((data) => (this.users = data.data));
     },
 
-    loadType() {},
+    loadType() {
+      axios.get("/api/type").then((data) => (this.types = data.data));
+    },
 
-    loadBranch() {},
+    loadBranch() {
+      axios.get("/api/branch").then((data) => (this.branches = data.data));
+    },
+
+    createUser() {
+      this.form.post("/api/users");
+    },
   },
   created() {
     this.loadUsers();

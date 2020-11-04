@@ -4,9 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\UserType;
 
-class UserController extends Controller
+class UserTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::with('type', 'branch')->get();
+        return UserType::all();
     }
 
     /**
@@ -26,8 +26,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return ['message' => 'Test rawr'];
-        // return User::create($request->all());
+        //
     }
 
     /**
@@ -38,7 +37,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return User::find($id);
+        //
     }
 
     /**
@@ -50,8 +49,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
+        //
     }
 
     /**
@@ -62,7 +60,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        //
     }
 }

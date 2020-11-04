@@ -9,7 +9,7 @@ class Branch extends Model
 {
     use HasFactory;
 
-    public function user(){
-        return $this->hasMany('App\Models\User');
-    }
+    // public function user(){
+    //     return $this->hasMany('App\Models\User');
+    // }
 }
