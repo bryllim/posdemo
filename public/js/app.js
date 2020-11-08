@@ -2428,6 +2428,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2469,7 +2486,21 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
-      this.form.post("/api/users");
+      var _this4 = this;
+
+      this.form.post("api/users").then(function () {
+        $("#modal-users").modal("hide");
+
+        _this4.loadUsers(); //Look for better ways
+
+      });
+    },
+    deleteUser: function deleteUser(id) {
+      var _this5 = this;
+
+      this.form["delete"]("api/users/" + id).then(function () {
+        _this5.loadUsers();
+      });
     }
   },
   created: function created() {
@@ -4515,7 +4546,43 @@ var render = function() {
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(user.updated_at))]),
                       _vm._v(" "),
-                      _vm._m(2, true)
+                      _c("td", { staticClass: "text-right" }, [
+                        _c("div", { staticClass: "dropdown" }, [
+                          _vm._m(2, true),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-item",
+                                  attrs: { href: "" }
+                                },
+                                [_vm._v("Edit")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "dropdown-item",
+                                  attrs: { href: "" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteUser(user.id)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Delete")]
+                              )
+                            ]
+                          )
+                        ])
+                      ])
                     ])
                   }),
                   0
@@ -4552,21 +4619,20 @@ var render = function() {
             _c("div", { staticClass: "modal-content" }, [
               _vm._m(4),
               _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _vm._m(5),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    attrs: { role: "form" },
-                    on: {
-                      submit: function($event) {
-                        $event.preventDefault()
-                        return _vm.createUser($event)
-                      }
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.createUser($event)
                     }
-                  },
-                  [
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _vm._m(5),
+                    _vm._v(" "),
                     _c("div", { staticClass: "form-group mb-3" }, [
                       _c(
                         "div",
@@ -4585,7 +4651,8 @@ var render = function() {
                             attrs: {
                               placeholder: "First Name",
                               type: "text",
-                              name: "firstname"
+                              name: "firstname",
+                              required: ""
                             },
                             domProps: { value: _vm.form.firstname },
                             on: {
@@ -4623,7 +4690,8 @@ var render = function() {
                             attrs: {
                               placeholder: "Last Name",
                               type: "text",
-                              name: "lastname"
+                              name: "lastname",
+                              required: ""
                             },
                             domProps: { value: _vm.form.lastname },
                             on: {
@@ -4661,7 +4729,8 @@ var render = function() {
                             attrs: {
                               placeholder: "Email",
                               type: "email",
-                              name: "email"
+                              name: "email",
+                              required: ""
                             },
                             domProps: { value: _vm.form.email },
                             on: {
@@ -4695,7 +4764,9 @@ var render = function() {
                             attrs: {
                               placeholder: "Password",
                               type: "password",
-                              name: "password"
+                              name: "password",
+                              minlength: "6",
+                              required: ""
                             },
                             domProps: { value: _vm.form.password },
                             on: {
@@ -4733,7 +4804,8 @@ var render = function() {
                             attrs: {
                               placeholder: "Location",
                               type: "text",
-                              name: "location"
+                              name: "location",
+                              required: ""
                             },
                             domProps: { value: _vm.form.location },
                             on: {
@@ -4771,7 +4843,8 @@ var render = function() {
                             attrs: {
                               placeholder: "Phone Number",
                               type: "tel",
-                              name: "phone"
+                              name: "phone",
+                              required: ""
                             },
                             domProps: { value: _vm.form.phone },
                             on: {
@@ -4804,7 +4877,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              attrs: { "data-toggle": "select" },
+                              attrs: { "data-toggle": "select", required: "" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -4862,7 +4935,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              attrs: { "data-toggle": "select" },
+                              attrs: { "data-toggle": "select", required: "" },
                               on: {
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -4905,11 +4978,11 @@ var render = function() {
                         ]
                       )
                     ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _vm._m(6)
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(6)
+                ]
+              )
             ])
           ]
         )
@@ -4973,36 +5046,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right" }, [
-      _c("div", { staticClass: "dropdown" }, [
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-sm btn-icon-only text-light",
-            attrs: {
-              href: "#",
-              role: "button",
-              "data-toggle": "dropdown",
-              "aria-haspopup": "true",
-              "aria-expanded": "false"
-            }
-          },
-          [_c("i", { staticClass: "fas fa-ellipsis-v" })]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "dropdown-menu dropdown-menu-right dropdown-menu-arrow"
-          },
-          [
-            _c("a", { staticClass: "dropdown-item", attrs: { href: "" } }, [
-              _vm._v("Edit")
-            ])
-          ]
-        )
-      ])
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: "btn btn-sm btn-icon-only text-light",
+        attrs: {
+          href: "#",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-ellipsis-v" })]
+    )
   },
   function() {
     var _vm = this
@@ -5059,13 +5116,13 @@ var staticRenderFns = [
           staticClass: "btn btn-secondary",
           attrs: { type: "button", "data-dismiss": "modal" }
         },
-        [_vm._v("\n            Close\n          ")]
+        [_vm._v("\n              Close\n            ")]
       ),
       _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Save changes")]
+        [_vm._v("\n              Save changes\n            ")]
       )
     ])
   }

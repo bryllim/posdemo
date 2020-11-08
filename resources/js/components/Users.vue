@@ -64,6 +64,12 @@
                         class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
                       >
                         <a class="dropdown-item" href="">Edit</a>
+                        <a
+                          class="dropdown-item"
+                          href=""
+                          @click="deleteUser(user.id)"
+                          >Delete</a
+                        >
                       </div>
                     </div>
                   </td>
@@ -100,11 +106,11 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="text-center text-muted mb-4">
-              <small>Enter the personal information</small>
-            </div>
-            <form role="form" @submit.prevent="createUser">
+          <form @submit.prevent="createUser">
+            <div class="modal-body">
+              <div class="text-center text-muted mb-4">
+                <small>Enter the personal information</small>
+              </div>
               <!-- First Name Input -->
               <div class="form-group mb-3">
                 <div class="input-group input-group-alternative">
@@ -114,6 +120,7 @@
                     type="text"
                     v-model="form.firstname"
                     name="firstname"
+                    required
                   />
                 </div>
               </div>
@@ -126,6 +133,7 @@
                     type="text"
                     v-model="form.lastname"
                     name="lastname"
+                    required
                   />
                 </div>
               </div>
@@ -138,6 +146,7 @@
                     type="email"
                     v-model="form.email"
                     name="email"
+                    required
                   />
                 </div>
               </div>
@@ -150,6 +159,8 @@
                     type="password"
                     v-model="form.password"
                     name="password"
+                    minlength="6"
+                    required
                   />
                 </div>
               </div>
@@ -162,6 +173,7 @@
                     type="text"
                     v-model="form.location"
                     name="location"
+                    required
                   />
                 </div>
               </div>
@@ -174,6 +186,7 @@
                     type="tel"
                     v-model="form.phone"
                     name="phone"
+                    required
                   />
                 </div>
               </div>
@@ -184,6 +197,7 @@
                     class="form-control"
                     data-toggle="select"
                     v-model="form.type"
+                    required
                   >
                     <option
                       v-for="type in types"
@@ -203,6 +217,7 @@
                     class="form-control"
                     data-toggle="select"
                     v-model="form.branch"
+                    required
                   >
                     <option
                       v-for="branch in branches"
@@ -214,18 +229,20 @@
                   </select>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -265,7 +282,16 @@ export default {
     },
 
     createUser() {
-      this.form.post("/api/users");
+      this.form.post("api/users").then(() => {
+        $("#modal-users").modal("hide");
+        this.loadUsers(); //Look for better ways
+      });
+    },
+
+    deleteUser(id) {
+      this.form.delete("api/users/" + id).then(() => {
+        this.loadUsers();
+      });
     },
   },
   created() {
