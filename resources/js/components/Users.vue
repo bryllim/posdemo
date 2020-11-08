@@ -14,6 +14,7 @@
                   class="btn btn-sm btn-primary"
                   data-toggle="modal"
                   data-target="#modal-users"
+                  @click="openModal"
                   >Add user</a
                 >
               </div>
@@ -63,10 +64,15 @@
                       <div
                         class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
                       >
-                        <a class="dropdown-item" href="">Edit</a>
                         <a
                           class="dropdown-item"
-                          href=""
+                          href="#"
+                          @click="editUser(user)"
+                          >Edit</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="#"
                           @click="deleteUser(user.id)"
                           >Delete</a
                         >
@@ -106,7 +112,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form @submit.prevent="createUser">
+          <form @submit.prevent="editMode ? updateUser() : createUser()">
             <div class="modal-body">
               <div class="text-center text-muted mb-4">
                 <small>Enter the personal information</small>
@@ -253,6 +259,7 @@
 export default {
   data() {
     return {
+      editMode: false,
       users: {},
       types: {},
       branches: {},
@@ -281,11 +288,28 @@ export default {
       axios.get("/api/branch").then((data) => (this.branches = data.data));
     },
 
+    openModal() {
+      this.editMode = false;
+      this.form.clear();
+      this.form.reset();
+      $("#addNew").modal("show");
+    },
+
+    editUser(user) {
+      this.editMode = true;
+      $("#modal-users").modal("show");
+      this.form.fill(user);
+    },
+
     createUser() {
       this.form.post("api/users").then(() => {
         $("#modal-users").modal("hide");
         this.loadUsers(); //Look for better ways
       });
+    },
+
+    updateUser(id) {
+      console.log("Update User");
     },
 
     deleteUser(id) {

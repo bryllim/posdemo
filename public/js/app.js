@@ -2445,9 +2445,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      editMode: false,
       users: {},
       types: {},
       branches: {},
@@ -2485,6 +2492,17 @@ __webpack_require__.r(__webpack_exports__);
         return _this3.branches = data.data;
       });
     },
+    openModal: function openModal() {
+      this.editMode = false;
+      this.form.clear();
+      this.form.reset();
+      $("#addNew").modal("show");
+    },
+    editUser: function editUser(user) {
+      this.editMode = true;
+      $("#modal-users").modal("show");
+      this.form.fill(user);
+    },
     createUser: function createUser() {
       var _this4 = this;
 
@@ -2494,6 +2512,9 @@ __webpack_require__.r(__webpack_exports__);
         _this4.loadUsers(); //Look for better ways
 
       });
+    },
+    updateUser: function updateUser(id) {
+      console.log("Update User");
     },
     deleteUser: function deleteUser(id) {
       var _this5 = this;
@@ -4507,7 +4528,27 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col" }, [
         _c("div", { staticClass: "card shadow" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header border-0" }, [
+            _c("div", { staticClass: "row align-items-center" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-4 text-right" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-sm btn-primary",
+                    attrs: {
+                      href: "",
+                      "data-toggle": "modal",
+                      "data-target": "#modal-users"
+                    },
+                    on: { click: _vm.openModal }
+                  },
+                  [_vm._v("Add user")]
+                )
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-12" }),
           _vm._v(" "),
@@ -4561,7 +4602,12 @@ var render = function() {
                                 "a",
                                 {
                                   staticClass: "dropdown-item",
-                                  attrs: { href: "" }
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editUser(user)
+                                    }
+                                  }
                                 },
                                 [_vm._v("Edit")]
                               ),
@@ -4570,7 +4616,7 @@ var render = function() {
                                 "a",
                                 {
                                   staticClass: "dropdown-item",
-                                  attrs: { href: "" },
+                                  attrs: { href: "#" },
                                   on: {
                                     click: function($event) {
                                       return _vm.deleteUser(user.id)
@@ -4625,7 +4671,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.createUser($event)
+                      _vm.editMode ? _vm.updateUser() : _vm.createUser()
                     }
                   }
                 },
@@ -4995,27 +5041,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header border-0" }, [
-      _c("div", { staticClass: "row align-items-center" }, [
-        _c("div", { staticClass: "col-8" }, [
-          _c("h3", { staticClass: "mb-0" }, [_vm._v("Users")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-4 text-right" }, [
-          _c(
-            "a",
-            {
-              staticClass: "btn btn-sm btn-primary",
-              attrs: {
-                href: "",
-                "data-toggle": "modal",
-                "data-target": "#modal-users"
-              }
-            },
-            [_vm._v("Add user")]
-          )
-        ])
-      ])
+    return _c("div", { staticClass: "col-8" }, [
+      _c("h3", { staticClass: "mb-0" }, [_vm._v("Users")])
     ])
   },
   function() {

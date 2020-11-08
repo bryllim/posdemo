@@ -98,7 +98,7 @@
                     <a class="nav-link" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
                         <i class="ni ni-shop" style="color: #f4645f;"></i>Shop
                     </a>
-                    <div class="collapse show" id="navbar-examples">
+                    <div class="collapse hide" id="navbar-examples">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="">

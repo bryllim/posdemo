@@ -17,7 +17,7 @@ class UserTypeSeeder extends Seeder
         // User Type
 
         DB::table('user_types')->insert([
-            'type' => "employee",
+            'type' => "staff",
             'created_at' => now(),
             'updated_at' => now()
         ]);

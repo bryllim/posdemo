@@ -16,6 +16,7 @@ class BranchSeeder extends Seeder
     {
         // Branches
         DB::table('branches')->insert([
+            'name' => "Main Branch",
             'street' => "Gorordo",
             'baranggay' => "Lahug",
             'city_munacipality' => 'Cebu',
