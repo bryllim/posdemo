@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\UserTypeController;
 use App\Http\Controllers\API\BranchController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,5 +27,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
 	'users' => UserController::class,
 	'type' => UserTypeController::class,
-	'branch' => BranchController::class
+	'branch' => BranchController::class,
+	'category' => CategoryController::class,
+	'product' => ProductController::class
 ]);

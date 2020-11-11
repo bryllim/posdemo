@@ -32,9 +32,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Juan</td>
-                  <td>Dela Cruz</td>
+                <tr v-for="category in categories" :key="category.id">
+                  <td>{{ category.name }}</td>
+                  <td>{{ category.description }}</td>
                   <td class="text-right">
                     <div class="dropdown">
                       <a
@@ -51,6 +51,12 @@
                         class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
                       >
                         <a class="dropdown-item" href="">Edit</a>
+                        <a
+                          class="dropdown-item"
+                          href="#"
+                          @click="deleteCategories(category.id)"
+                          >Delete</a
+                        >
                       </div>
                     </div>
                   </td>
@@ -87,11 +93,11 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="text-center text-muted mb-4">
-              <small>Enter the category information</small>
-            </div>
-            <form role="form">
+          <form role="form" @submit.prevent="createCategories">
+            <div class="modal-body">
+              <div class="text-center text-muted mb-4">
+                <small>Enter the category information</small>
+              </div>
               <!-- Cateogry Name Input -->
               <div class="form-group mb-3">
                 <div class="input-group input-group-alternative">
@@ -99,32 +105,83 @@
                     class="form-control"
                     placeholder="Category Name"
                     type="text"
+                    v-model="form.name"
+                    name="name"
+                    required
                   />
                 </div>
               </div>
+              <!-- !Category Name Input -->
               <!-- Description Input -->
               <div class="form-group mb-3">
                 <div class="input-group input-group-alternative">
                   <textarea
                     class="form-control"
                     aria-label="Description"
+                    v-model="form.description"
+                    name="description"
+                    required
                   ></textarea>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+              <!-- !Description Input -->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      categories: {},
+      form: new Form({
+        name: "",
+        description: "",
+      }),
+    };
+  },
+
+  methods: {
+    loadCategories() {
+      axios.get("api/category").then((data) => (this.categories = data.data));
+    },
+
+    openModal() {},
+
+    createCategories() {
+      this.form.post("api/category").then(() => {
+        $("#modal-category").modal("hide");
+        this.loadCategories();
+      });
+    },
+
+    updateCategories() {},
+
+    deleteCategories(id) {
+      this.form.delete("api/category/" + id).then(() => {
+        this.loadCategories();
+      });
+    },
+  },
+
+  created() {
+    this.loadCategories();
+  },
+};
+</script>

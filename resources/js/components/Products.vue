@@ -95,18 +95,20 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="text-center text-muted mb-4">
-              <small>Enter the product information</small>
-            </div>
-            <form role="form">
+          <form role="form" @submit.prevent="createProduct">
+            <div class="modal-body">
+              <div class="text-center text-muted mb-4">
+                <small>Enter the product information</small>
+              </div>
               <!-- Product Name Input -->
               <div class="form-group mb-3">
                 <div class="input-group input-group-alternative">
                   <input
                     class="form-control"
                     placeholder="Product Name"
+                    name="name"
                     type="text"
+                    v-model="form.name"
                   />
                 </div>
               </div>
@@ -116,6 +118,8 @@
                   <textarea
                     class="form-control"
                     aria-label="Description"
+                    name="description"
+                    v-model="form.description"
                   ></textarea>
                 </div>
               </div>
@@ -127,10 +131,12 @@
                     class="form-control"
                     aria-label="qty"
                     placeholder="Qty"
+                    name="qty"
+                    v-model="form.qty"
                   />
                 </div>
               </div>
-              <!-- Amount Input -->
+              <!-- Price Input -->
               <div class="form-group">
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -139,8 +145,10 @@
                   <input
                     type="number"
                     class="form-control"
-                    aria-label="Amount"
+                    aria-label="price"
                     placeholder="250.00"
+                    name="price"
+                    v-model="form.price"
                   />
                 </div>
               </div>
@@ -152,6 +160,9 @@
                     class="custom-file-input"
                     id="customFileLang"
                     lang="en"
+                    name="image"
+                    v-on:change="form.image"
+                    required
                   />
                   <label class="custom-file-label" for="customFileLang"
                     >Select file</label
@@ -161,26 +172,67 @@
               <!-- Category -->
               <div class="form-group">
                 <div class="input-group input-group-alternative">
-                  <select class="form-control" data-toggle="select" required>
+                  <select
+                    class="form-control"
+                    data-toggle="select"
+                    v-model="form.category"
+                  >
                     <option>Category 1</option>
                     <option>Category 2</option>
                   </select>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      products: {},
+      form: new Form({
+        name: "",
+        description: "",
+        qty: "",
+        price: "",
+        image: "",
+        category: "",
+      }),
+    };
+  },
+  methods: {
+    loadProducts() {
+      axios.get("api/product").then((data) => (this.products = data.data));
+    },
+
+    createProduct() {
+      // this.form.post("api/product").then(() => {
+      //   $("#modal-product").modal("hide");
+      //   this.loadProducts();
+      // });
+
+      this.form.post("api/product");
+    },
+  },
+  created() {
+    this.loadProducts();
+  },
+};
+</script>
