@@ -20,6 +20,8 @@ window.axios = require('axios');
 import SalesMonitor from './components/SalesMonitor.vue';
 import POS from './components/POS.vue';
 import User from './components/Users.vue';
+import Categories from './components/Categories.vue';
+import Products from './components/Products.vue';
 
 // Import v-form
 import { Form, HasError, AlertError } from 'vform';
@@ -32,7 +34,9 @@ Vue.use(VueRouter);
 const routes = [
     { path: '/salesmonitor', component: SalesMonitor, name: SalesMonitor, meta: { auth: true }},
     { path: '/pos', component: POS, name: POS, meta: { auth: true }},
-    { path: '/user', component: User, name: User, meta: { auth: true }}
+    { path: '/user', component: User, name: User, meta: { auth: true }},
+    { path: '/categories', component: Categories, name: Categories, meta: { auth: true }},
+    { path: '/products', component: Products, name: Products, meta: { auth: true }}
   ]
 
 const router = new VueRouter({
